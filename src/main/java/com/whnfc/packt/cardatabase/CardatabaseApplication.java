@@ -1,19 +1,18 @@
 package com.whnfc.packt.cardatabase;
 
-import com.whnfc.packt.cardatabase.domain.Car;
-import com.whnfc.packt.cardatabase.domain.CarRepository;
-import com.whnfc.packt.cardatabase.domain.Owner;
-import com.whnfc.packt.cardatabase.domain.OwnerRepository;
+import com.whnfc.packt.cardatabase.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class CardatabaseApplication {
+public class CardatabaseApplication extends SpringBootServletInitializer {
 
     private static final Logger log = LoggerFactory.getLogger(CardatabaseApplication.class);
 
@@ -22,6 +21,14 @@ public class CardatabaseApplication {
 
     @Autowired
     private OwnerRepository ownerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(CardatabaseApplication.class);
+    }
 
     public static void main(String[] args) {
         log.info("My Application start...");
@@ -49,6 +56,11 @@ public class CardatabaseApplication {
                     "KKO-0212", 2018, 39000, owner2);
             carRepository.save(car3);
 
+            User user1 = new User("user","$2a$04$1.YhMIgNX/8TkCKGFUONWO1waedKhQ5KrnB30fl0Q01QKqmzLf.Zi","USER");
+            User user2 = new User("admin","$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG","ADMIN");
+
+            userRepository.save(user1);
+            userRepository.save(user2);
         };
     }
 

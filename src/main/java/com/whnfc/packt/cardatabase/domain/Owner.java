@@ -1,32 +1,45 @@
 package com.whnfc.packt.cardatabase.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * @author tuchun
- * @version 2019-12-13
- */
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Owner {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private long ownerid;
+    private String firstname, lastname;
 
-    @Column(length = 20,nullable = false)
-    private String firstname;
-
-    @Column(length = 20,nullable = false)
-    private String lastname;
-
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "owner")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="owner")
+    @JsonIgnore
     private List<Car> cars;
+
+    public Owner() {}
 
     public Owner(String firstname, String lastname) {
         super();
         this.firstname = firstname;
         this.lastname = lastname;
+    }
+
+    public List<Car> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
+    public long getOwnerid() {
+        return ownerid;
+    }
+
+    public void setOwnerid(long ownerid) {
+        this.ownerid = ownerid;
     }
 
     public String getFirstname() {
@@ -45,11 +58,6 @@ public class Owner {
         this.lastname = lastname;
     }
 
-    public List<Car> getCars() {
-        return cars;
-    }
 
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
-    }
+
 }
